@@ -12,25 +12,24 @@ const char *badArgMessage = "\nBad arguments...\nUsage: $ ./f13 c f\nWhere c is 
 int main(int argc, char **argv) {
     // test arg usage, return -1 if bad
     if (argc != 3) {
-        puts(badArgMessage);
+        fprintf(stderr, "%s", badArgMessage);
         return -1;
     }
 
     // test char arg, return -1 if bad
     if (strlen(argv[1]) > 1) {
-        puts(badArgMessage);
+        fprintf(stderr, "%s", badArgMessage);
         return -1;
     }
 
     // try to open file
     FILE *file = fopen(argv[2], "r");
-    if (file == 0) {
+    if (file == NULL) {
         printf("Could not open file...\n");
     } else {
         
         // get first argument value
         char c = argv[1][0];
-        int argCharAsInt = (int) c;
         int charCount = 0;
         
         int currentChar;
@@ -38,14 +37,17 @@ int main(int argc, char **argv) {
            indicates the end of the file.  Note that the idiom of "assign
            to a variable, check the value" used below works because
            the assignment statement evaluates to the value assigned. */
-        while ((currentChar = fgetc(file)) != EOF) {
-            if(argCharAsInt == currentChar)
+        while ((currentChar = (char)fgetc(file)) != EOF) {
+            if(currentChar == c)
                 charCount++;
         }
         
         fclose(file);
 
-        printf("\nDone!\nYour char (%c) was found %i times\n\n" , c, charCount);
+        if(charCount > 1)
+            printf("\nDone!\nYour char (%c) was found %i times\n\n" , c, charCount);
+        else
+            printf("\nDone!\nYour char (%c) was found %i time\n\n" , c, charCount);
         // return number of chars
         return charCount;
     }
