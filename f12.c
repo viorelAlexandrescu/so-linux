@@ -35,9 +35,16 @@ int main(int argc, char **argv) {
     printf("File has %i bytes\n", fileSize);
 
     long i = 0L;
-    while(i < fileSize) {
+    char first, last;
+    while(i < fileSize/2) {
         fseek(file, i, SEEK_SET);
-        printf("\n char:'%c' at position '%ld'", getc(file), ftell(file));
+        first = getc(file);
+        fseek(file, -(i+1), SEEK_END);
+        last = getc(file);
+        fseek(file, i, SEEK_SET);
+        putc(last, file);
+        fseek(file, -(i+1), SEEK_END);
+        putc(first, file);
         i++;
     }
     printf("\n");
