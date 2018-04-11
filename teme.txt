@@ -1,0 +1,35 @@
+
+POSIBIL
+
+ F14. (3 puncte) Scrieti un program care numara aparitiile unui string
+ intr-un fisier dat. Stringul si specificatorul fisierului sunt dati ca
+ argumente in linia de comanda.
+
+ F15. (1.5 puncte) Scrieti un program ce simuleaza comanda "cat", cu tot cu
+ cazul cand specificatorul fisierului este dat ca argument in linia de
+ comanda. Programul va putea fi lansat astfel astfel:
+   cat f   ==>  citeste din f si scrie la stdout
+   cat     ===> citeste de la stdin si scrie la stdout
+
+F8. (0.5 puncte) Simularea comenzii "cp" in forma cea mai simpla: program
+ ce copiaza un fisier intr-alt fisier; specificatorii fisierelor sunti dati
+ ca argumente in linia de comanda.
+
+F9. (0.5 puncte) Scrieti un program care concateneaza un fisier la sfarsitul
+ altui fisier. Specificatorii fisierelor sunti dati ca argumente in linia de
+ comanda.
+
+
+
+F10. (2 puncte) Scrieti un program care concateneaza mai multe fisiere sursa
+ intr-unul destinatie. Se va lansa sub forma:
+   concat   f1 + f2 + ... + fn   f
+ unde f1, ..., fn sunt fisierele sursa iar f este fisierul destinatie.
+ Daca n=1, va copia pe f1 in f.
+
+
+F18. (2 puncte) Scrieti un program care sorteaza caracterele dintr-un fisier
+ al carui specificator este dat ca argument in linia de comanda. Nu se vor
+ folosi fisiere auxiliare.
+
+                                                       DRAGULICI DANIEL
