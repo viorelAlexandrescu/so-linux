@@ -6,23 +6,23 @@ F12. (1.5 puncte) Scrieti un program care inverseaza ordinea caracterelor
  intr-un fisier al carui specificator este dat ca argument in linia de
  comanda. Nu se vor folosi fisiere auxiliare.
 */
-const char *badArgMessage = "\nBad arguments...\nUsage: $ ./f12 f\nWhere f is the text file of which, it's contents shall be reversed\n";
+const char *badArgMessage = "\nBad arguments...\nUsage: $ %s f\nWhere f is the text file of which, it's contents shall be reversed\n";
 
 int main(int argc, char **argv) {
     // test arg usage, return 1 if bad
     if (argc != 2) {
-        fprintf(stderr, "%s", badArgMessage);
+        fprintf(stderr, badArgMessage, argv[0]);
         return 1;
     }
 
     // try to open file, if error, return -1
     FILE *file = fopen(argv[1], "r+");
     if (file == NULL) {
-        fprintf(stderr, "%s", "Could not open file...\n");
-        return -1;
+        //fprintf(stderr, "%s", "Could not open file...\n");
+	    perror(argv[1]);
+        return 10;
     }
 
-    char currentChar;
     int fileSize;
 
     // Seek the last byte of the file
@@ -33,24 +33,29 @@ int main(int argc, char **argv) {
     rewind(file);
 
     printf("File has %i bytes\n", fileSize);
+    if (fileSize == 0) {
+        printf("File is empty...\n");
+        return 2;
+    }
 
     long i = 0L;
     char first, last;
-    while(i < fileSize/2) {
+    while (i < fileSize/2) {
+        // get char according to index position
         fseek(file, i, SEEK_SET);
         first = getc(file);
         fseek(file, -(i+1), SEEK_END);
         last = getc(file);
+
+        // interchange
         fseek(file, i, SEEK_SET);
         putc(last, file);
         fseek(file, -(i+1), SEEK_END);
         putc(first, file);
         i++;
     }
-    printf("\n");
-
     
     fclose(file);
-    // printf("\nDone!\nThe contents of your file have been reversed!");
+    printf("\nDone!\nThe contents of your file have been reversed!\n");
     return 0;
 }

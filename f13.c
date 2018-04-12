@@ -7,18 +7,21 @@ F13. (0.5 puncte) Scrieti un program care numara aparitiile unui caracter
  intr-un fisier dat. Caracterul si specificatorul fisierului sunt dati ca
  argumente in linia de comanda.
 */
-const char *badArgMessage = "\nBad arguments...\nUsage: $ ./f13 c f\nWhere c is the char whose appearances are counted in file f\n";
+const char *badArgMessage = "\nBad arguments...\n%s\nUsage: $ %s c f\nWhere c is the char whose appearances are counted in file f\n";
 
 int main(int argc, char **argv) {
     // test arg usage, return -1 if bad
-    if (argc != 3) {
-        fprintf(stderr, "%s", badArgMessage);
-        return -1;
+    if (argc > 3) {	
+        fprintf(stderr, badArgMessage, "Too many args", argv[0]);
+        return 1;
+    } else if (argc < 3) {
+        fprintf(stderr, badArgMessage, "More args needed", argv[0]);
+        return 1;
     }
 
     // test char arg, return -1 if bad
-    if (strlen(argv[1]) > 1) {
-        fprintf(stderr, "%s", badArgMessage);
+    if (strlen(argv[1]) != 1) {
+        fprintf(stderr, badArgMessage, "the c param must have 1 element", argv[0]);
         return -1;
     }
 
@@ -26,10 +29,11 @@ int main(int argc, char **argv) {
     FILE *file = fopen(argv[2], "r");
     if (file == NULL) {
         printf("Could not open file...\n");
+        perror(argv[2]);
     } else {
         
         // get first argument value
-        char c = argv[1][0];
+        unsigned char c = (unsigned char)argv[1][0];
         int charCount = 0;
         
         int currentChar;
@@ -37,17 +41,15 @@ int main(int argc, char **argv) {
            indicates the end of the file.  Note that the idiom of "assign
            to a variable, check the value" used below works because
            the assignment statement evaluates to the value assigned. */
-        while ((currentChar = (char)fgetc(file)) != EOF) {
-            if(currentChar == c)
+        while ((currentChar = fgetc(file)) != EOF) {
+            if(currentChar == (int)c)
                 charCount++;
         }
-        
+        // can use buffer version because it covers the case for char \377 <- octal, OxFF <- hexa
         fclose(file);
 
-        if(charCount > 1)
-            printf("\nDone!\nYour char (%c) was found %i times\n\n" , c, charCount);
-        else
-            printf("\nDone!\nYour char (%c) was found %i time\n\n" , c, charCount);
+        printf("\nDone!\nYour char (%c) was found %i times\n\n" , c, charCount);
+        
         // return number of chars
         return charCount;
     }
