@@ -6,12 +6,13 @@ F12. (1.5 puncte) Scrieti un program care inverseaza ordinea caracterelor
  intr-un fisier al carui specificator este dat ca argument in linia de
  comanda. Nu se vor folosi fisiere auxiliare.
 */
-const char *badArgMessage = "\nBad arguments...\nUsage: $ %s f\nWhere f is the text file of which, it's contents shall be reversed\n";
 
 int main(int argc, char **argv) {
     // test arg usage, return 1 if bad
     if (argc != 2) {
-        fprintf(stderr, badArgMessage, argv[0]);
+        fprintf(stderr, "No file given as argument;\nUsage %s f\n", argv[0]);
+
+        // return bad arg usage error code
         return 1;
     }
 
@@ -32,30 +33,58 @@ int main(int argc, char **argv) {
      // go back to the start of the file
     rewind(file);
 
-    printf("File has %i bytes\n", fileSize);
+    // check if file has no characters
     if (fileSize == 0) {
         printf("File is empty...\n");
+
+        // return empty file error value
         return 2;
     }
 
+    // iterator
     long i = 0L;
+    // first char gets put in last char, in pairs
     char first, last;
-    while (i < fileSize/2) {
+
+    // varianta cu while
+    // while (i < fileSize/2) {
+    //     // get char according to index position
+    //     fseek(file, i, SEEK_SET);
+    //     // get pair first element
+    //     first = getc(file);
+
+    //     fseek(file, -(i+1), SEEK_END);
+    //     // get pair last element
+    //     last = getc(file);
+
+    //     // interchange
+    //     fseek(file, i, SEEK_SET);
+    //     putc(last, file);
+    //     fseek(file, -(i + 1), SEEK_END);
+    //     putc(first, file);
+    //     i++;
+    // }
+
+    for(i = 0L; i < fileSize/2; i++) {
         // get char according to index position
         fseek(file, i, SEEK_SET);
+        // get pair first element
         first = getc(file);
+
         fseek(file, -(i+1), SEEK_END);
+        // get pair last element
         last = getc(file);
 
         // interchange
         fseek(file, i, SEEK_SET);
         putc(last, file);
-        fseek(file, -(i+1), SEEK_END);
+        fseek(file, -(i + 1), SEEK_END);
         putc(first, file);
-        i++;
     }
     
+    // close file access
     fclose(file);
-    printf("\nDone!\nThe contents of your file have been reversed!\n");
+    
+    // return success code
     return 0;
 }
